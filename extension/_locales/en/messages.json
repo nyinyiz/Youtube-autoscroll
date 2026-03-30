@@ -1,0 +1,12 @@
+{
+  "extName":         { "message": "YouTube Shorts Auto-Scroll" },
+  "extDescription":  { "message": "Automatically advances to the next YouTube Short when the current one ends." },
+  "toggleCommand":   { "message": "Toggle auto-scroll" },
+  "popupTitle":      { "message": "YouTube Auto-Scroll" },
+  "autoScrollLabel": { "message": "Auto-scroll" },
+  "statusActive":    { "message": "Active on Shorts" },
+  "statusPaused":    { "message": "Paused" },
+  "delayLabel":      { "message": "Delay before next" },
+  "triggerLabel":    { "message": "Trigger early" },
+  "shortcutLabel":   { "message": "Toggle shortcut" }
+}

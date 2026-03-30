@@ -1,0 +1,12 @@
+{
+  "extName":         { "message": "YouTube Shorts ऑटो-स्क्रॉल" },
+  "extDescription":  { "message": "वर्तमान YouTube Short समाप्त होने पर स्वचालित रूप से अगले पर जाता है।" },
+  "toggleCommand":   { "message": "ऑटो-स्क्रॉल टॉगल करें" },
+  "popupTitle":      { "message": "YouTube ऑटो-स्क्रॉल" },
+  "autoScrollLabel": { "message": "ऑटो-स्क्रॉल" },
+  "statusActive":    { "message": "Shorts पर सक्रिय" },
+  "statusPaused":    { "message": "रुका हुआ" },
+  "delayLabel":      { "message": "अगले से पहले देरी" },
+  "triggerLabel":    { "message": "जल्दी ट्रिगर" },
+  "shortcutLabel":   { "message": "शॉर्टकट" }
+}
