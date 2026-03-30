@@ -1,25 +1,20 @@
 (() => {
     let active = false;
-    let autoEnable = false;
     let delay = 0;
     let threshold = 0.5;
     let navigating = false;
 
-    chrome.storage.local.get(['active', 'autoEnable', 'delay', 'threshold'], (result) => {
-        if (result.autoEnable !== undefined) autoEnable = result.autoEnable;
-        if (result.delay !== undefined) delay = result.delay;
-        if (result.threshold !== undefined) threshold = result.threshold;
-
-        // If auto-enable is on, activate immediately
-        active = autoEnable ? true : (result.active || false);
+    chrome.storage.local.get(['active', 'delay', 'threshold'], (result) => {
+        active    = result.active    ?? false;
+        delay     = result.delay     ?? 0;
+        threshold = result.threshold ?? 0.5;
     });
 
     chrome.runtime.onMessage.addListener((request) => {
-        if (request.type === "UPDATE_STATE") {
-            active = request.active;
-            autoEnable = request.autoEnable;
-            delay = request.delay;
-            threshold = request.threshold;
+        if (request.type === 'UPDATE_STATE') {
+            active    = request.active;
+            delay     = request.delay     ?? 0;
+            threshold = request.threshold ?? 0.5;
         }
     });
 
@@ -27,8 +22,6 @@
         if (!active || navigating) return;
         navigating = true;
         setTimeout(() => { navigating = false; }, 2000);
-
-        console.log(`YouTube Auto-Scroll: navigating in ${delay}s`);
 
         setTimeout(() => {
             const nextBtn = document.querySelector('#navigation-button-down button');
@@ -54,20 +47,15 @@
 
         video.addEventListener('timeupdate', () => {
             if (!video.duration) return;
-
             const remaining = video.duration - video.currentTime;
-
             if (remaining <= threshold && !triggered) {
                 triggered = true;
                 goToNextShort();
             }
-
             if (video.currentTime < 0.5 && triggered) {
                 triggered = false;
             }
         });
-
-        console.log('YouTube Auto-Scroll: attached to video');
     }
 
     const observer = new MutationObserver(() => {
