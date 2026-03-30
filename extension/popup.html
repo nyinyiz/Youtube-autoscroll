@@ -1,48 +1,155 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-        body { width: 240px; padding: 15px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        h3 { margin-top: 0; font-size: 16px; color: #cc0000; }
-        .row { margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .slider-control { margin-bottom: 14px; }
-        .slider-control .row { margin-bottom: 4px; }
-        input[type="range"] { width: 100%; }
-        span { font-size: 14px; }
-        .val { font-weight: bold; }
-        hr { border: none; border-top: 1px solid #eee; margin: 12px 0; }
-    </style>
+  <meta charset="utf-8">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 250px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #fff;
+      color: #111;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 14px 10px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .header img { width: 16px; height: 16px; }
+    .header-title { font-size: 13px; font-weight: 700; }
+
+    /* Body */
+    .body { padding: 12px 14px; }
+
+    /* Toggle row */
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .toggle-label { font-size: 13px; font-weight: 600; }
+    .toggle-status { font-size: 10px; margin-top: 2px; }
+    .toggle-status.on  { color: #22aa44; }
+    .toggle-status.off { color: #aaa; }
+
+    /* Toggle switch */
+    .switch {
+      position: relative;
+      width: 40px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      inset: 0;
+      background: #ddd;
+      border-radius: 11px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .slider::before {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      left: 2px;
+      top: 2px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+      transition: transform 0.2s;
+    }
+    input:checked + .slider { background: #cc0000; }
+    input:checked + .slider::before { transform: translateX(18px); }
+
+    /* Sliders section */
+    .sliders { border-top: 1px solid #f5f5f5; padding-top: 10px; }
+    .sliders.dimmed { opacity: 0.35; pointer-events: none; }
+
+    .slider-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 5px;
+    }
+    .slider-row label { font-size: 11px; color: #555; }
+    .slider-row .val  { font-size: 11px; color: #cc0000; font-weight: 600; }
+
+    input[type="range"] {
+      width: 100%;
+      height: 3px;
+      margin-bottom: 12px;
+      accent-color: #cc0000;
+      cursor: pointer;
+    }
+    input[type="range"]:last-child { margin-bottom: 0; }
+
+    /* Footer */
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 14px;
+      background: #fafafa;
+      border-top: 1px solid #f0f0f0;
+    }
+    .footer-label { font-size: 10px; color: #bbb; }
+    .keys { display: flex; gap: 5px; align-items: center; }
+    .key {
+      font-size: 9px;
+      font-family: monospace;
+      background: #e8e8e8;
+      color: #555;
+      padding: 2px 5px;
+      border-radius: 3px;
+      border-bottom: 2px solid #ccc;
+    }
+  </style>
 </head>
 <body>
-    <h3>YouTube Auto-Scroll</h3>
+  <div class="header">
+    <img src="icons/icon16.png" alt="">
+    <span class="header-title" data-i18n="popupTitle">YouTube Auto-Scroll</span>
+  </div>
 
-    <div class="row">
-        <span>Active</span>
+  <div class="body">
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label" data-i18n="autoScrollLabel">Auto-scroll</div>
+        <div class="toggle-status off" id="statusText"></div>
+      </div>
+      <label class="switch">
         <input type="checkbox" id="active">
-    </div>
-    <div class="row">
-        <span>Auto-enable on Shorts</span>
-        <input type="checkbox" id="autoEnable">
+        <span class="slider"></span>
+      </label>
     </div>
 
-    <hr>
+    <div class="sliders dimmed" id="sliders">
+      <div class="slider-row">
+        <label data-i18n="delayLabel">Delay before next</label>
+        <span class="val"><span id="delayVal">0.0</span>s</span>
+      </div>
+      <input type="range" id="delay" min="0" max="5" step="0.5" value="0">
 
-    <div class="slider-control">
-        <div class="row">
-            <span>Delay before next video</span>
-            <span class="val"><span id="delayVal">0.0</span>s</span>
-        </div>
-        <input type="range" id="delay" min="0" max="5" step="0.5" value="0">
+      <div class="slider-row">
+        <label data-i18n="triggerLabel">Trigger early</label>
+        <span class="val"><span id="thresholdVal">0.5</span>s</span>
+      </div>
+      <input type="range" id="threshold" min="0.1" max="3" step="0.1" value="0.5">
     </div>
+  </div>
 
-    <div class="slider-control">
-        <div class="row">
-            <span>Trigger seconds early</span>
-            <span class="val"><span id="thresholdVal">0.5</span>s</span>
-        </div>
-        <input type="range" id="threshold" min="0.1" max="3" step="0.1" value="0.5">
-    </div>
+  <div class="footer">
+    <span class="footer-label" data-i18n="shortcutLabel">Toggle shortcut</span>
+    <div class="keys" id="shortcutKeys"></div>
+  </div>
 
-    <script src="popup.js"></script>
+  <script src="popup.js"></script>
 </body>
 </html>
