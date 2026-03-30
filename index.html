@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WASM Scroller Test</title>
+    <style>
+        body { height: 2000px; padding: 20px; font-family: sans-serif; background: linear-gradient(#eee, #ccc); }
+        .controls { position: fixed; top: 10px; right: 10px; background: white; padding: 15px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <h3>Local Test</h3>
+        <label><input type="checkbox" id="active"> Active</label><br><br>
+        <input type="range" id="speed" min="1" max="10" value="2">
+    </div>
+    <h1>WASM Auto-Scroll Local Test</h1>
+    <p>This page is 2000px high. Build the project and serve this folder to test.</p>
+
+    <script type="module">
+        import init, { Scroller } from './extension/pkg/youtube_autoscroll_wasm.js';
+
+        async function run() {
+            await init();
+            const scroller = new Scroller();
+            
+            const activeCheck = document.getElementById('active');
+            const speedRange = document.getElementById('speed');
+
+            function loop(time) {
+                scroller.set_active(activeCheck.checked);
+                scroller.set_speed(parseFloat(speedRange.value));
+                scroller.tick(time);
+                requestAnimationFrame(loop);
+            }
+            requestAnimationFrame(loop);
+        }
+        run();
+    </script>
+</body>
+</html>
