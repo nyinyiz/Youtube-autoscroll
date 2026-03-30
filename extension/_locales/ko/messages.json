@@ -1,0 +1,12 @@
+{
+  "extName":         { "message": "YouTube Shorts 자동 스크롤" },
+  "extDescription":  { "message": "현재 YouTube Short가 끝나면 자동으로 다음 Short로 넘어갑니다." },
+  "toggleCommand":   { "message": "자동 스크롤 토글" },
+  "popupTitle":      { "message": "YouTube 자동 스크롤" },
+  "autoScrollLabel": { "message": "자동 스크롤" },
+  "statusActive":    { "message": "Shorts에서 활성화" },
+  "statusPaused":    { "message": "일시 정지" },
+  "delayLabel":      { "message": "다음 영상까지 지연" },
+  "triggerLabel":    { "message": "조기 전환" },
+  "shortcutLabel":   { "message": "단축키" }
+}

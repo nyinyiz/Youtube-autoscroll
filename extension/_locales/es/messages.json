@@ -1,0 +1,12 @@
+{
+  "extName":         { "message": "YouTube Shorts Auto-Scroll" },
+  "extDescription":  { "message": "Avanza automáticamente al siguiente YouTube Short cuando termina el actual." },
+  "toggleCommand":   { "message": "Alternar desplazamiento automático" },
+  "popupTitle":      { "message": "YouTube Auto-Scroll" },
+  "autoScrollLabel": { "message": "Desplazamiento automático" },
+  "statusActive":    { "message": "Activo en Shorts" },
+  "statusPaused":    { "message": "Pausado" },
+  "delayLabel":      { "message": "Retraso antes del siguiente" },
+  "triggerLabel":    { "message": "Activar antes de" },
+  "shortcutLabel":   { "message": "Atajo de teclado" }
+}
