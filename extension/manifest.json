@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube WASM Auto-Scroll",
+  "version": "1.0",
+  "description": "Auto-scroll YouTube comments using Rust/WASM",
+  "permissions": ["storage", "activeTab"],
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/shorts/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["pkg/youtube_autoscroll_wasm_bg.wasm", "pkg/youtube_autoscroll_wasm.js"],
+      "matches": ["https://www.youtube.com/*"]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  }
+}
