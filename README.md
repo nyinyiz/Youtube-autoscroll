@@ -32,7 +32,9 @@ YouTube Shorts doesn't auto-advance between videos. This extension watches the c
 
 ## Install from Chrome Web Store
 
-> Coming soon — submission in progress.
+You can install **YouTube Shorts Auto-Scroll** directly from the Chrome Web Store:
+
+- **Chrome Web Store**: https://chromewebstore.google.com/detail/nldkgejiiicemhfkjcldnahddignnpnc?utm_source=item-share-cb
 
 ---
 
