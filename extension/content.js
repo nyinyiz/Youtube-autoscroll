@@ -1,29 +1,52 @@
 (() => {
+    const { buildSettings, isShortsPath } = globalThis.AutoScrollContentState;
+
     let active = false;
     let delay = 0;
     let threshold = 0.5;
     let navigating = false;
+    let lastPath = location.pathname;
 
     chrome.storage.local.get(['active', 'delay', 'threshold'], (result) => {
-        active    = result.active    ?? false;
-        delay     = result.delay     ?? 0;
-        threshold = result.threshold ?? 0.5;
+        applySettings(result);
     });
 
     chrome.runtime.onMessage.addListener((request) => {
         if (request.type === 'UPDATE_STATE') {
-            active    = request.active;
-            delay     = request.delay     ?? 0;
-            threshold = request.threshold ?? 0.5;
+            applySettings(request);
         }
     });
 
+    chrome.storage.onChanged.addListener((changes, areaName) => {
+        if (areaName !== 'local') return;
+        if (!changes.active && !changes.delay && !changes.threshold) return;
+
+        applySettings({
+            active: changes.active ? changes.active.newValue : active,
+            delay: changes.delay ? changes.delay.newValue : delay,
+            threshold: changes.threshold ? changes.threshold.newValue : threshold,
+        });
+    });
+
+    function applySettings(source) {
+        const settings = buildSettings(source);
+        active = settings.active;
+        delay = settings.delay;
+        threshold = settings.threshold;
+    }
+
+    function isShortsPage() {
+        return isShortsPath(location.pathname);
+    }
+
     function goToNextShort() {
-        if (!active || navigating) return;
+        if (!active || navigating || !isShortsPage()) return;
         navigating = true;
         setTimeout(() => { navigating = false; }, 2000);
 
         setTimeout(() => {
+            if (!active || !isShortsPage()) return;
+
             const nextBtn = document.querySelector('#navigation-button-down button');
             if (nextBtn) {
                 nextBtn.click();
@@ -46,7 +69,7 @@
         let triggered = false;
 
         video.addEventListener('timeupdate', () => {
-            if (!video.duration) return;
+            if (!isShortsPage() || !video.duration) return;
             const remaining = video.duration - video.currentTime;
             if (remaining <= threshold && !triggered) {
                 triggered = true;
@@ -58,10 +81,23 @@
         });
     }
 
-    const observer = new MutationObserver(() => {
+    function attachAllVideoListeners() {
         document.querySelectorAll('video').forEach(attachVideoListener);
+    }
+
+    function resetNavigationStateOnUrlChange() {
+        if (location.pathname === lastPath) return;
+
+        lastPath = location.pathname;
+        navigating = false;
+        attachAllVideoListeners();
+    }
+
+    const observer = new MutationObserver(() => {
+        resetNavigationStateOnUrlChange();
+        attachAllVideoListeners();
     });
 
-    observer.observe(document.body, { childList: true, subtree: true });
-    document.querySelectorAll('video').forEach(attachVideoListener);
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+    attachAllVideoListeners();
 })();

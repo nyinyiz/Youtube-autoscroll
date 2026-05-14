@@ -8,5 +8,6 @@
   "statusPaused":    { "message": "रुका हुआ" },
   "delayLabel":      { "message": "अगले से पहले देरी" },
   "triggerLabel":    { "message": "जल्दी ट्रिगर" },
-  "shortcutLabel":   { "message": "शॉर्टकट" }
+  "shortcutLabel":   { "message": "शॉर्टकट" },
+  "resetSettingsLabel": { "message": "सेटिंग रीसेट करें" }
 }

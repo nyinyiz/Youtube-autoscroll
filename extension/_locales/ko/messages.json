@@ -8,5 +8,6 @@
   "statusPaused":    { "message": "일시 정지" },
   "delayLabel":      { "message": "다음 영상까지 지연" },
   "triggerLabel":    { "message": "조기 전환" },
-  "shortcutLabel":   { "message": "단축키" }
+  "shortcutLabel":   { "message": "단축키" },
+  "resetSettingsLabel": { "message": "설정 초기화" }
 }

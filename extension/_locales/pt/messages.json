@@ -8,5 +8,6 @@
   "statusPaused":    { "message": "Pausado" },
   "delayLabel":      { "message": "Atraso antes do próximo" },
   "triggerLabel":    { "message": "Acionar antes de" },
-  "shortcutLabel":   { "message": "Atalho de teclado" }
+  "shortcutLabel":   { "message": "Atalho de teclado" },
+  "resetSettingsLabel": { "message": "Redefinir configurações" }
 }

@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const { buildStoredState, resetTimingSettings } = window.AutoScrollSettings;
+
     // --- i18n ---
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const msg = chrome.i18n.getMessage(el.dataset.i18n);
@@ -20,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const delayVal       = document.getElementById('delayVal');
     const thresholdRange = document.getElementById('threshold');
     const thresholdVal   = document.getElementById('thresholdVal');
+    const resetSettings  = document.getElementById('resetSettings');
 
     const msgActive = chrome.i18n.getMessage('statusActive') || 'Active on Shorts';
     const msgPaused = chrome.i18n.getMessage('statusPaused') || 'Paused';
@@ -30,20 +33,19 @@ document.addEventListener('DOMContentLoaded', () => {
         statusText.className = 'toggle-status ' + (isActive ? 'on' : 'off');
     }
 
+    function applyTimingControls(state) {
+        delayRange.value = state.delay;
+        delayVal.textContent = parseFloat(state.delay).toFixed(1);
+        thresholdRange.value = state.threshold;
+        thresholdVal.textContent = parseFloat(state.threshold).toFixed(1);
+    }
+
     // --- Load saved state ---
     chrome.storage.local.get(['active', 'delay', 'threshold'], (result) => {
-        const isActive = result.active || false;
-        activeCheck.checked = isActive;
-        applyState(isActive);
-
-        if (result.delay !== undefined) {
-            delayRange.value = result.delay;
-            delayVal.textContent = parseFloat(result.delay).toFixed(1);
-        }
-        if (result.threshold !== undefined) {
-            thresholdRange.value = result.threshold;
-            thresholdVal.textContent = parseFloat(result.threshold).toFixed(1);
-        }
+        const state = buildStoredState(result);
+        activeCheck.checked = state.active;
+        applyState(state.active);
+        applyTimingControls(state);
     });
 
     // --- Send state to content script ---
@@ -83,5 +85,11 @@ document.addEventListener('DOMContentLoaded', () => {
             delay: parseFloat(delayRange.value),
             threshold: parseFloat(thresholdRange.value),
         });
+    });
+
+    resetSettings.addEventListener('click', () => {
+        const state = resetTimingSettings({ active: activeCheck.checked });
+        applyTimingControls(state);
+        sendUpdate(state);
     });
 });
