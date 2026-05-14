@@ -8,5 +8,6 @@
   "statusPaused":    { "message": "一時停止中" },
   "delayLabel":      { "message": "次へ移動までの遅延" },
   "triggerLabel":    { "message": "早めに切り替え" },
-  "shortcutLabel":   { "message": "ショートカット" }
+  "shortcutLabel":   { "message": "ショートカット" },
+  "resetSettingsLabel": { "message": "設定をリセット" }
 }
