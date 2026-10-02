@@ -1,0 +1,7 @@
+{
+  "name": "youtube-shorts-autoscroll",
+  "private": true,
+  "scripts": {
+    "test": "node tests/popup-state.test.js"
+  }
+}

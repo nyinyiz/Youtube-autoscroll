@@ -8,5 +8,6 @@
   "statusPaused":    { "message": "Paused" },
   "delayLabel":      { "message": "Delay before next" },
   "triggerLabel":    { "message": "Trigger early" },
-  "shortcutLabel":   { "message": "Toggle shortcut" }
+  "shortcutLabel":   { "message": "Toggle shortcut" },
+  "resetSettingsLabel": { "message": "Reset settings" }
 }
