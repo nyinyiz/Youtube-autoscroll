@@ -46,14 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Send state to content script ---
+    // --- Persist state; content scripts sync via chrome.storage.onChanged ---
     function sendUpdate(state) {
         chrome.storage.local.set(state);
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-            if (tabs[0]?.id) {
-                chrome.tabs.sendMessage(tabs[0].id, { type: 'UPDATE_STATE', ...state }).catch(() => {});
-            }
-        });
     }
 
     // --- Listeners ---
