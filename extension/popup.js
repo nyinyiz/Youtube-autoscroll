@@ -19,6 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const advancedToggle = document.getElementById('advancedToggle');
     const advancedBody   = document.getElementById('advancedBody');
 
+    // Read from the manifest so the label can never drift from the packaged build
+    document.getElementById('version').textContent =
+        'v' + chrome.runtime.getManifest().version;
+
     const msgActive = chrome.i18n.getMessage('statusActive') || 'Active on Shorts';
     const msgPaused = chrome.i18n.getMessage('statusPaused') || 'Paused';
 
@@ -99,8 +103,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const open = advancedToggle.getAttribute('aria-expanded') === 'true';
         advancedToggle.setAttribute('aria-expanded', String(!open));
         advancedBody.classList.toggle('open', !open);
-        // Reset lives inside the panel, so its state only matters while visible
-        if (!open) resetSettings.focus();
+        // Move focus into the panel so keyboard users are not left behind the
+        // disclosure. Target the first slider, not reset: reset is disabled at
+        // default settings, and focus() on a disabled button is a silent no-op.
+        if (!open) thresholdRange.focus();
     });
 
     resetSettings.addEventListener('click', () => {

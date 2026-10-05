@@ -277,10 +277,24 @@
       input[type="range"] { accent-color: var(--ink); }
     }
 
-    /* ---------- Reset ---------- */
+    /* ---------- Panel footer: reset + version ---------- */
+    .panel-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--s2);
+      margin: var(--s1) var(--s4) var(--s4);
+    }
+    .version {
+      flex: none;
+      font-size: var(--fs-micro);
+      font-weight: 600;
+      color: var(--text-3);
+      font-variant-numeric: tabular-nums;
+    }
     .reset {
       display: block;
-      margin: var(--s1) var(--s4) var(--s4);
+      margin: 0;
       padding: 0;
       border: 0;
       background: none;
@@ -358,7 +372,10 @@
           </div>
         </div>
 
-        <button type="button" class="reset" id="resetSettings" data-i18n="resetSettingsLabel">Reset settings</button>
+        <div class="panel-foot">
+          <button type="button" class="reset" id="resetSettings" data-i18n="resetSettingsLabel">Reset settings</button>
+          <span class="version" id="version"></span>
+        </div>
       </div>
     </div>
   </div>
