@@ -6,7 +6,7 @@
   "autoScrollLabel":     { "message": "Desplazamiento automático" },
   "statusActive":        { "message": "Activo en Shorts" },
   "statusPaused":        { "message": "Pausado" },
-  "timingLabel":         { "message": "Temporización" },
+  "advancedLabel":       { "message": "Avanzado" },
   "triggerLabel":        { "message": "Cambiar antes del final" },
   "triggerHelp":         { "message": "Avanza cuando queden estos segundos." },
   "delayLabel":          { "message": "Esperar después" },

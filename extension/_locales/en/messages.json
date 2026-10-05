@@ -6,7 +6,7 @@
   "autoScrollLabel":     { "message": "Auto-scroll" },
   "statusActive":        { "message": "Active on Shorts" },
   "statusPaused":        { "message": "Paused" },
-  "timingLabel":         { "message": "Timing" },
+  "advancedLabel":       { "message": "Advanced" },
   "triggerLabel":        { "message": "Switch before end" },
   "triggerHelp":         { "message": "Advance while this many seconds are left." },
   "delayLabel":          { "message": "Hold afterwards" },

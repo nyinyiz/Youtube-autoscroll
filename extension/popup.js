@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const thresholdRange = document.getElementById('threshold');
     const thresholdVal   = document.getElementById('thresholdVal');
     const resetSettings  = document.getElementById('resetSettings');
+    const advancedToggle = document.getElementById('advancedToggle');
+    const advancedBody   = document.getElementById('advancedBody');
 
     const msgActive = chrome.i18n.getMessage('statusActive') || 'Active on Shorts';
     const msgPaused = chrome.i18n.getMessage('statusPaused') || 'Paused';
@@ -91,6 +93,14 @@ document.addEventListener('DOMContentLoaded', () => {
         paintRange(thresholdRange, thresholdVal, thresholdRange.value);
         resetSettings.disabled = false;
         persist();
+    });
+
+    advancedToggle.addEventListener('click', () => {
+        const open = advancedToggle.getAttribute('aria-expanded') === 'true';
+        advancedToggle.setAttribute('aria-expanded', String(!open));
+        advancedBody.classList.toggle('open', !open);
+        // Reset lives inside the panel, so its state only matters while visible
+        if (!open) resetSettings.focus();
     });
 
     resetSettings.addEventListener('click', () => {

@@ -6,30 +6,28 @@
     :root {
       color-scheme: light dark;
 
-      /* Type: four obvious steps, 11 -> 15 */
       --fs-micro: 11px;
       --fs-label: 12.5px;
-      --fs-value: 13.5px;
-      --fs-title: 15px;
+      --fs-value: 13px;
+      --fs-title: 14px;
 
-      /* Spacing: 4px rhythm */
-      --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 20px;
+      --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px;
 
-      --radius: 9px;
-      --control-h: 28px;
+      --radius: 8px;
 
       --bg: #ffffff;
       --bg-raised: #ffffff;
       --text: #14161a;
-      --text-2: #565c65;
+      --text-2: #5c626a;
       --text-3: #6b7178;
-      --line: #e7e9ec;
-      --line-strong: #d5d9de;
-      --brand: #cc0022;
-      --brand-hover: #a5001a;
-      --track: #dde1e6;
+      --line: #e8eaed;
+      --line-strong: #d8dce1;
+      --track: #dfe2e7;
+      --ink: #2b2f34;
+      --on: #cc0022;
+      --on-hover: #a5001a;
       --ring: #1a73e8;
-      --shadow-thumb: 0 1px 3px rgba(16, 20, 26, .3);
+      --shadow-thumb: 0 1px 3px rgba(16, 20, 26, .32);
     }
 
     @media (prefers-color-scheme: dark) {
@@ -37,13 +35,14 @@
         --bg: #1b1c1e;
         --bg-raised: #242527;
         --text: #ecedef;
-        --text-2: #a9aeb6;
-        --text-3: #949aa2;
-        --line: #2f3134;
-        --line-strong: #3d4044;
-        --brand: #ff5a4d;
-        --brand-hover: #ff7a70;
-        --track: #3c3e42;
+        --text-2: #a5aab2;
+        --text-3: #8d939b;
+        --line: #2c2e31;
+        --line-strong: #3a3d41;
+        --track: #3a3d41;
+        --ink: #d7dade;
+        --on: #ff5a4d;
+        --on-hover: #ff7b70;
         --ring: #8ab4f8;
         --shadow-thumb: 0 1px 3px rgba(0, 0, 0, .55);
       }
@@ -52,7 +51,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      width: 304px;
+      width: 272px;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       font-size: var(--fs-label);
       line-height: 1.45;
@@ -61,7 +60,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    ::selection { background: color-mix(in srgb, var(--brand) 24%, transparent); }
+    ::selection { background: color-mix(in srgb, var(--text) 16%, transparent); }
 
     /* ---------- Masthead ---------- */
     .masthead {
@@ -69,12 +68,11 @@
       align-items: center;
       gap: var(--s2);
       padding: var(--s3) var(--s4);
-      border-bottom: 1px solid var(--line);
     }
-    .masthead .mark { width: 22px; height: 22px; border-radius: 5px; flex: none; }
+    .masthead .mark { width: 18px; height: 18px; border-radius: 4px; flex: none; }
     .masthead h1 {
       font-size: var(--fs-title);
-      font-weight: 650;
+      font-weight: 620;
       letter-spacing: -.01em;
       flex: 1 1 auto;
       min-width: 0;
@@ -83,13 +81,12 @@
       text-overflow: ellipsis;
     }
 
-    /* Keyboard cap: reads as "shortcut" without needing a label */
     .key {
       flex: none;
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
       font-size: var(--fs-micro);
       font-weight: 600;
-      color: var(--text-2);
+      color: var(--text-3);
       background: var(--bg-raised);
       border: 1px solid var(--line-strong);
       border-bottom-width: 2px;
@@ -98,14 +95,14 @@
       white-space: nowrap;
     }
 
-    /* ---------- Primary control ---------- */
+    /* ---------- Primary row ---------- */
     .control {
       display: flex;
       align-items: center;
       gap: var(--s3);
-      padding: var(--s4);
+      padding: var(--s2) var(--s4) var(--s4);
     }
-    .control-copy { min-width: 0; }
+    .control-copy { flex: 1 1 auto; min-width: 0; }
     .control-name {
       display: block;
       font-size: var(--fs-value);
@@ -115,32 +112,32 @@
     .state {
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin-top: 2px;
-      font-size: var(--fs-label);
-      color: var(--text-2);
+      gap: 5px;
+      margin-top: 1px;
+      font-size: var(--fs-micro);
+      color: var(--text-3);
     }
-    /* Drawn dot, not a glyph character */
     .dot {
-      width: 7px;
-      height: 7px;
+      width: 6px;
+      height: 6px;
       flex: none;
       border-radius: 50%;
       background: var(--text-3);
       transition: background 180ms cubic-bezier(.2, 0, 0, 1);
     }
-    .state.on { color: var(--brand); font-weight: 600; }
-    .state.on .dot { background: var(--brand); }
+    /* Neutral while off: the switch carries the state, not the text */
+    .state.on .dot { background: var(--on); }
 
-    /* Switch: styled on the input itself so it keeps a real focus ring */
+    /* Switch: styled on the input so it keeps a real focus ring.
+       Red appears here and nowhere else. */
     .switch { flex: none; display: block; margin: 0; }
     .switch input {
       appearance: none;
       -webkit-appearance: none;
       display: block;
       position: relative;
-      width: 46px;
-      height: 26px;
+      width: 44px;
+      height: 25px;
       margin: 0;
       border-radius: 13px;
       background: var(--track);
@@ -152,35 +149,75 @@
       position: absolute;
       top: 3px;
       left: 3px;
-      width: 20px;
-      height: 20px;
+      width: 19px;
+      height: 19px;
       border-radius: 50%;
       background: #fff;
       box-shadow: var(--shadow-thumb);
       transition: transform 200ms cubic-bezier(.2, 0, 0, 1);
     }
-    .switch input:checked { background: var(--brand); }
-    .switch input:checked::after { transform: translateX(20px); }
+    .switch input:checked { background: var(--on); }
+    .switch input:checked::after { transform: translateX(19px); }
     .switch input:hover { background: var(--line-strong); }
-    .switch input:checked:hover { background: var(--brand-hover); }
+    .switch input:checked:hover { background: var(--on-hover); }
     .switch input:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
 
-    /* ---------- Timing ---------- */
-    .timing {
-      padding: var(--s3) var(--s4) var(--s4);
-      border-top: 1px solid var(--line);
-    }
-    .section-label {
-      /* More space above than below, per the spacing rule */
-      margin: var(--s1) 0 var(--s3);
+    /* ---------- Advanced disclosure ---------- */
+    .advanced { border-top: 1px solid var(--line); }
+
+    .advanced-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+      padding: var(--s3) var(--s4);
+      border: 0;
+      background: transparent;
+      color: var(--text-2);
+      font: inherit;
       font-size: var(--fs-micro);
-      font-weight: 650;
-      letter-spacing: .07em;
+      font-weight: 600;
+      letter-spacing: .04em;
       text-transform: uppercase;
-      color: var(--text-3);
+      cursor: pointer;
+    }
+    .advanced-toggle:hover { color: var(--text); }
+    .advanced-toggle:focus-visible { outline: 2px solid var(--ring); outline-offset: -2px; }
+    .caret {
+      width: 8px;
+      height: 8px;
+      flex: none;
+      margin-left: -2px;
+      border-right: 1.5px solid currentColor;
+      border-bottom: 1.5px solid currentColor;
+      transform: rotate(-45deg);
+      transform-origin: center;
+      transition: transform 180ms cubic-bezier(.2, 0, 0, 1);
+    }
+    .advanced-toggle[aria-expanded="true"] .caret { transform: rotate(45deg); }
+
+    /* grid-rows keeps the open/close motion smooth at any content height */
+    .advanced-body {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 220ms cubic-bezier(.2, 0, 0, 1);
+    }
+    .advanced-body.open { grid-template-rows: 1fr; }
+    .advanced-inner { overflow: hidden; }
+    /* Zero-height alone leaves the controls focusable, so a keyboard user tabs
+       into invisible sliders. visibility:hidden removes them from the tab order.
+       Delayed on close so it does not cut the collapse animation short. */
+    .advanced-body:not(.open) .advanced-inner {
+      visibility: hidden;
+      transition: visibility 0s linear 220ms;
+    }
+    .advanced-body.open .advanced-inner {
+      visibility: visible;
+      transition: visibility 0s linear 0s;
     }
 
-    .field + .field { margin-top: var(--s4); }
+    .fields { padding: 0 var(--s4) var(--s2); }
+    .field + .field { margin-top: var(--s3); }
 
     .field-head {
       display: flex;
@@ -188,89 +225,91 @@
       justify-content: space-between;
       gap: var(--s2);
     }
-    .field-head label { font-size: var(--fs-label); font-weight: 600; color: var(--text); }
+    .field-head label { font-size: var(--fs-micro); font-weight: 600; color: var(--text-2); }
     .field-value {
-      font-size: var(--fs-value);
+      font-size: var(--fs-micro);
       font-weight: 650;
-      color: var(--brand);
+      color: var(--text-2);
       font-variant-numeric: tabular-nums;
     }
     .field-help {
-      margin-top: 1px;
+      margin-top: 5px;
       font-size: var(--fs-micro);
+      line-height: 1.4;
       color: var(--text-3);
     }
 
-    /* Range: 28px hit area, 4px visible track, filled progress */
+    /* Range: 26px hit area, 3px neutral track, ink fill */
     input[type="range"] {
       appearance: none;
       -webkit-appearance: none;
       display: block;
       width: 100%;
-      height: var(--control-h);
-      margin: var(--s1) 0 0;
-      border-radius: 3px;
+      height: 26px;
+      margin: 1px 0 0;
       background:
         linear-gradient(to right,
-          var(--brand) 0 var(--pct, 0%),
+          var(--ink) 0 var(--pct, 0%),
           var(--track) var(--pct, 0%) 100%)
-        center / 100% 4px no-repeat;
+        center / 100% 3px no-repeat;
       cursor: pointer;
     }
-    input[type="range"]::-webkit-slider-runnable-track { height: 4px; background: transparent; }
+    input[type="range"]::-webkit-slider-runnable-track { height: 3px; background: transparent; }
     input[type="range"]::-webkit-slider-thumb {
       appearance: none;
       -webkit-appearance: none;
-      width: 16px;
-      height: 16px;
-      margin-top: -6px;
+      width: 14px;
+      height: 14px;
+      margin-top: -5.5px;
       border-radius: 50%;
-      background: var(--brand);
+      background: var(--ink);
       border: 2px solid var(--bg);
       box-shadow: var(--shadow-thumb);
-      transition: transform 140ms cubic-bezier(.2, 0, 0, 1), box-shadow 140ms;
+      transition: transform 140ms cubic-bezier(.2, 0, 0, 1);
     }
     input[type="range"]:hover::-webkit-slider-thumb { transform: scale(1.14); }
-    input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.24); }
+    input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.22); }
     input[type="range"]:focus-visible {
       outline: 2px solid var(--ring);
       outline-offset: 1px;
     }
-    /* Non-WebKit engines keep a native control, tinted to match */
     @supports not (selector(::-webkit-slider-thumb)) {
-      input[type="range"] { accent-color: var(--brand); }
+      input[type="range"] { accent-color: var(--ink); }
     }
 
     /* ---------- Reset ---------- */
     .reset {
       display: block;
-      width: 100%;
-      min-height: 32px;
-      margin-top: var(--s4);
-      border: 1px solid var(--line-strong);
-      border-radius: var(--radius);
-      background: var(--bg-raised);
-      color: var(--text-2);
+      margin: var(--s1) var(--s4) var(--s4);
+      padding: 0;
+      border: 0;
+      background: none;
+      color: var(--text-3);
       font: inherit;
-      font-size: var(--fs-label);
+      font-size: var(--fs-micro);
       font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      text-decoration-color: var(--line-strong);
       cursor: pointer;
-      transition: background 140ms, color 140ms, border-color 140ms;
+      min-height: 24px;
     }
-    .reset:hover { color: var(--brand); border-color: var(--brand); }
-    .reset:active { background: color-mix(in srgb, var(--brand) 8%, var(--bg-raised)); }
-    .reset:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
-    .reset[disabled] { opacity: .5; cursor: default; }
-    .reset[disabled]:hover { color: var(--text-2); border-color: var(--line-strong); }
+    .reset:hover { color: var(--text); text-decoration-color: currentColor; }
+    .reset:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; border-radius: 3px; }
+    .reset[disabled] { opacity: .45; cursor: default; text-decoration: none; }
+    .reset[disabled]:hover { color: var(--text-3); }
 
     @media (prefers-reduced-motion: reduce) {
       * { transition-duration: 1ms !important; }
+      /* visibility is a discrete switch, not motion: it must be instant or the
+         panel stays unreachable to keyboard users while it is collapsed. */
+      .advanced-body:not(.open) .advanced-inner { transition-delay: 0s !important; }
     }
   </style>
 </head>
 <body>
   <header class="masthead">
-    <img class="mark" src="icons/icon48.png" width="22" height="22" alt="">
+    <img class="mark" src="icons/icon48.png" width="18" height="18" alt="">
     <h1 data-i18n="popupTitle">YouTube Auto-Scroll</h1>
     <span class="key" id="shortcutKeys"></span>
   </header>
@@ -288,31 +327,41 @@
     </label>
   </section>
 
-  <section class="timing">
-    <h2 class="section-label" data-i18n="timingLabel">Timing</h2>
+  <div class="advanced">
+    <button type="button" class="advanced-toggle" id="advancedToggle"
+            aria-expanded="false" aria-controls="advancedBody">
+      <span class="caret" aria-hidden="true"></span>
+      <span data-i18n="advancedLabel">Advanced</span>
+    </button>
 
-    <div class="field">
-      <div class="field-head">
-        <label for="threshold" data-i18n="triggerLabel">Switch before end</label>
-        <output class="field-value" for="threshold"><span id="thresholdVal">0.5</span>s</output>
+    <div class="advanced-body" id="advancedBody">
+      <div class="advanced-inner">
+        <div class="fields">
+          <div class="field">
+            <div class="field-head">
+              <label for="threshold" data-i18n="triggerLabel">Switch before end</label>
+              <output class="field-value" for="threshold"><span id="thresholdVal">0.5</span>s</output>
+            </div>
+            <input type="range" id="threshold" min="0.1" max="3" step="0.1" value="0.5"
+                   aria-describedby="thresholdHelp">
+            <p class="field-help" id="thresholdHelp" data-i18n="triggerHelp"></p>
+          </div>
+
+          <div class="field">
+            <div class="field-head">
+              <label for="delay" data-i18n="delayLabel">Hold afterwards</label>
+              <output class="field-value" for="delay"><span id="delayVal">0.0</span>s</output>
+            </div>
+            <input type="range" id="delay" min="0" max="5" step="0.5" value="0"
+                   aria-describedby="delayHelp">
+            <p class="field-help" id="delayHelp" data-i18n="delayHelp"></p>
+          </div>
+        </div>
+
+        <button type="button" class="reset" id="resetSettings" data-i18n="resetSettingsLabel">Reset settings</button>
       </div>
-      <input type="range" id="threshold" min="0.1" max="3" step="0.1" value="0.5"
-             aria-describedby="thresholdHelp">
-      <p class="field-help" id="thresholdHelp" data-i18n="triggerHelp"></p>
     </div>
-
-    <div class="field">
-      <div class="field-head">
-        <label for="delay" data-i18n="delayLabel">Hold afterwards</label>
-        <output class="field-value" for="delay"><span id="delayVal">0.0</span>s</output>
-      </div>
-      <input type="range" id="delay" min="0" max="5" step="0.5" value="0"
-             aria-describedby="delayHelp">
-      <p class="field-help" id="delayHelp" data-i18n="delayHelp"></p>
-    </div>
-
-    <button type="button" class="reset" id="resetSettings" data-i18n="resetSettingsLabel">Reset settings</button>
-  </section>
+  </div>
 
   <script src="popup-state.js"></script>
   <script src="popup.js"></script>

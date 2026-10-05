@@ -6,7 +6,7 @@
   "autoScrollLabel":     { "message": "自動スクロール" },
   "statusActive":        { "message": "Shortsで有効" },
   "statusPaused":        { "message": "一時停止中" },
-  "timingLabel":         { "message": "タイミング" },
+  "advancedLabel":       { "message": "詳細" },
   "triggerLabel":        { "message": "終了前に切り替える" },
   "triggerHelp":         { "message": "残りがこの秒数のときに進みます。" },
   "delayLabel":          { "message": "その後に待つ" },
