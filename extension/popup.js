@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const { buildStoredState, resetTimingSettings } = window.AutoScrollSettings;
+    const { buildStoredState, resetTimingSettings, DEFAULT_SETTINGS } = window.AutoScrollSettings;
 
     // --- i18n ---
     document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -7,17 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (msg) el.textContent = msg;
     });
 
-    // Show platform-specific keyboard shortcut
-    const isMac = /Mac/.test(navigator.platform);
-    const keysEl = document.getElementById('shortcutKeys');
-    keysEl.innerHTML = isMac
-        ? '<span class="key">⌥⇧S</span>'
-        : '<span class="key">Alt+⇧S</span>';
-
     // --- Elements ---
     const activeCheck    = document.getElementById('active');
-    const slidersEl      = document.getElementById('sliders');
-    const statusText     = document.getElementById('statusText');
+    const statusEl       = document.getElementById('statusText');
+    const statusLabel    = document.getElementById('statusLabel');
     const delayRange     = document.getElementById('delay');
     const delayVal       = document.getElementById('delayVal');
     const thresholdRange = document.getElementById('threshold');
@@ -27,64 +20,93 @@ document.addEventListener('DOMContentLoaded', () => {
     const msgActive = chrome.i18n.getMessage('statusActive') || 'Active on Shorts';
     const msgPaused = chrome.i18n.getMessage('statusPaused') || 'Paused';
 
+    // Keyboard cap, with an accessible name since the glyph alone says nothing
+    const isMac = /Mac/.test(navigator.platform);
+    const keysEl = document.getElementById('shortcutKeys');
+    keysEl.textContent = isMac ? '⌥⇧S' : 'Alt+⇧S';
+    const shortcutName = chrome.i18n.getMessage('shortcutLabel');
+    if (shortcutName) {
+        keysEl.title = shortcutName;
+        keysEl.setAttribute('aria-label', shortcutName);
+    }
+
+    // --- Render ---
+    function paintRange(range, valueEl, raw) {
+        const value = parseFloat(raw);
+        valueEl.textContent = value.toFixed(1);
+        const min = parseFloat(range.min), max = parseFloat(range.max);
+        range.style.setProperty('--pct', ((value - min) / (max - min)) * 100 + '%');
+    }
+
     function applyState(isActive) {
-        slidersEl.classList.toggle('dimmed', !isActive);
-        statusText.textContent = isActive ? ('● ' + msgActive) : ('○ ' + msgPaused);
-        statusText.className = 'toggle-status ' + (isActive ? 'on' : 'off');
+        statusEl.classList.toggle('on', isActive);
+        statusLabel.textContent = isActive ? msgActive : msgPaused;
     }
 
     function applyTimingControls(state) {
         delayRange.value = state.delay;
-        delayVal.textContent = parseFloat(state.delay).toFixed(1);
         thresholdRange.value = state.threshold;
-        thresholdVal.textContent = parseFloat(state.threshold).toFixed(1);
+        paintRange(delayRange, delayVal, state.delay);
+        paintRange(thresholdRange, thresholdVal, state.threshold);
+        const isDefault =
+            parseFloat(state.delay) === DEFAULT_SETTINGS.delay &&
+            parseFloat(state.threshold) === DEFAULT_SETTINGS.threshold;
+        resetSettings.disabled = isDefault;
+    }
+
+    function render(state) {
+        activeCheck.checked = state.active;
+        applyState(state.active);
+        applyTimingControls(state);
+    }
+
+    // Single source of truth: persist, never message the tab
+    function persist(partial) {
+        chrome.storage.local.set({
+            active: activeCheck.checked,
+            delay: parseFloat(delayRange.value),
+            threshold: parseFloat(thresholdRange.value),
+            ...partial,
+        });
     }
 
     // --- Load saved state ---
     chrome.storage.local.get(['active', 'delay', 'threshold'], (result) => {
-        const state = buildStoredState(result);
-        activeCheck.checked = state.active;
-        applyState(state.active);
-        applyTimingControls(state);
+        render(buildStoredState(result));
     });
-
-    // --- Persist state; content scripts sync via chrome.storage.onChanged ---
-    function sendUpdate(state) {
-        chrome.storage.local.set(state);
-    }
 
     // --- Listeners ---
     activeCheck.addEventListener('change', () => {
-        const isActive = activeCheck.checked;
-        applyState(isActive);
-        sendUpdate({
-            active: isActive,
-            delay: parseFloat(delayRange.value),
-            threshold: parseFloat(thresholdRange.value),
-        });
+        applyState(activeCheck.checked);
+        persist();
     });
 
     delayRange.addEventListener('input', () => {
-        delayVal.textContent = parseFloat(delayRange.value).toFixed(1);
-        sendUpdate({
-            active: activeCheck.checked,
-            delay: parseFloat(delayRange.value),
-            threshold: parseFloat(thresholdRange.value),
-        });
+        paintRange(delayRange, delayVal, delayRange.value);
+        resetSettings.disabled = false;
+        persist();
     });
 
     thresholdRange.addEventListener('input', () => {
-        thresholdVal.textContent = parseFloat(thresholdRange.value).toFixed(1);
-        sendUpdate({
-            active: activeCheck.checked,
-            delay: parseFloat(delayRange.value),
-            threshold: parseFloat(thresholdRange.value),
-        });
+        paintRange(thresholdRange, thresholdVal, thresholdRange.value);
+        resetSettings.disabled = false;
+        persist();
     });
 
     resetSettings.addEventListener('click', () => {
         const state = resetTimingSettings({ active: activeCheck.checked });
         applyTimingControls(state);
-        sendUpdate(state);
+        persist({ delay: state.delay, threshold: state.threshold });
+    });
+
+    // Registered last so a failure here cannot leave the popup unwired.
+    // The keyboard shortcut writes to storage while this popup may be open;
+    // reflect that instead of showing a stale toggle.
+    chrome.storage.onChanged.addListener((changes, area) => {
+        if (area !== 'local') return;
+        if (!('active' in changes) && !('delay' in changes) && !('threshold' in changes)) return;
+        chrome.storage.local.get(['active', 'delay', 'threshold'], (result) => {
+            render(buildStoredState(result));
+        });
     });
 });

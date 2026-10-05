@@ -1,13 +1,16 @@
 {
-  "extName":         { "message": "YouTube Shorts Auto-Scroll" },
-  "extDescription":  { "message": "Avanza automáticamente al siguiente YouTube Short cuando termina el actual." },
-  "toggleCommand":   { "message": "Alternar desplazamiento automático" },
-  "popupTitle":      { "message": "YouTube Auto-Scroll" },
-  "autoScrollLabel": { "message": "Desplazamiento automático" },
-  "statusActive":    { "message": "Activo en Shorts" },
-  "statusPaused":    { "message": "Pausado" },
-  "delayLabel":      { "message": "Retraso antes del siguiente" },
-  "triggerLabel":    { "message": "Activar antes de" },
-  "shortcutLabel":   { "message": "Atajo de teclado" },
-  "resetSettingsLabel": { "message": "Restablecer ajustes" }
+  "extName":             { "message": "YouTube Shorts Auto-Scroll" },
+  "extDescription":      { "message": "Avanza automáticamente al siguiente YouTube Short cuando termina el actual." },
+  "toggleCommand":       { "message": "Alternar desplazamiento automático" },
+  "popupTitle":          { "message": "YouTube Auto-Scroll" },
+  "autoScrollLabel":     { "message": "Desplazamiento automático" },
+  "statusActive":        { "message": "Activo en Shorts" },
+  "statusPaused":        { "message": "Pausado" },
+  "timingLabel":         { "message": "Temporización" },
+  "triggerLabel":        { "message": "Cambiar antes del final" },
+  "triggerHelp":         { "message": "Avanza cuando queden estos segundos." },
+  "delayLabel":          { "message": "Esperar después" },
+  "delayHelp":           { "message": "Espera extra cuando toca cambiar." },
+  "shortcutLabel":       { "message": "Atajo de teclado" },
+  "resetSettingsLabel":  { "message": "Restablecer ajustes" }
 }

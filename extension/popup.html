@@ -3,172 +3,316 @@
 <head>
   <meta charset="utf-8">
   <style>
+    :root {
+      color-scheme: light dark;
+
+      /* Type: four obvious steps, 11 -> 15 */
+      --fs-micro: 11px;
+      --fs-label: 12.5px;
+      --fs-value: 13.5px;
+      --fs-title: 15px;
+
+      /* Spacing: 4px rhythm */
+      --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 20px;
+
+      --radius: 9px;
+      --control-h: 28px;
+
+      --bg: #ffffff;
+      --bg-raised: #ffffff;
+      --text: #14161a;
+      --text-2: #565c65;
+      --text-3: #6b7178;
+      --line: #e7e9ec;
+      --line-strong: #d5d9de;
+      --brand: #cc0022;
+      --brand-hover: #a5001a;
+      --track: #dde1e6;
+      --ring: #1a73e8;
+      --shadow-thumb: 0 1px 3px rgba(16, 20, 26, .3);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1b1c1e;
+        --bg-raised: #242527;
+        --text: #ecedef;
+        --text-2: #a9aeb6;
+        --text-3: #949aa2;
+        --line: #2f3134;
+        --line-strong: #3d4044;
+        --brand: #ff5a4d;
+        --brand-hover: #ff7a70;
+        --track: #3c3e42;
+        --ring: #8ab4f8;
+        --shadow-thumb: 0 1px 3px rgba(0, 0, 0, .55);
+      }
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      width: 250px;
+      width: 304px;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: #fff;
-      color: #111;
+      font-size: var(--fs-label);
+      line-height: 1.45;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Header */
-    .header {
+    ::selection { background: color-mix(in srgb, var(--brand) 24%, transparent); }
+
+    /* ---------- Masthead ---------- */
+    .masthead {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 12px 14px 10px;
-      border-bottom: 1px solid #f0f0f0;
+      gap: var(--s2);
+      padding: var(--s3) var(--s4);
+      border-bottom: 1px solid var(--line);
     }
-    .header img { width: 16px; height: 16px; }
-    .header-title { font-size: 13px; font-weight: 700; }
+    .masthead .mark { width: 22px; height: 22px; border-radius: 5px; flex: none; }
+    .masthead h1 {
+      font-size: var(--fs-title);
+      font-weight: 650;
+      letter-spacing: -.01em;
+      flex: 1 1 auto;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-    /* Body */
-    .body { padding: 12px 14px; }
+    /* Keyboard cap: reads as "shortcut" without needing a label */
+    .key {
+      flex: none;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: var(--fs-micro);
+      font-weight: 600;
+      color: var(--text-2);
+      background: var(--bg-raised);
+      border: 1px solid var(--line-strong);
+      border-bottom-width: 2px;
+      border-radius: 5px;
+      padding: 2px 6px;
+      white-space: nowrap;
+    }
 
-    /* Toggle row */
-    .toggle-row {
+    /* ---------- Primary control ---------- */
+    .control {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 14px;
+      gap: var(--s3);
+      padding: var(--s4);
     }
-    .toggle-label { font-size: 13px; font-weight: 600; }
-    .toggle-status { font-size: 10px; margin-top: 2px; }
-    .toggle-status.on  { color: #22aa44; }
-    .toggle-status.off { color: #aaa; }
+    .control-copy { min-width: 0; }
+    .control-name {
+      display: block;
+      font-size: var(--fs-value);
+      font-weight: 600;
+      letter-spacing: -.005em;
+    }
+    .state {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 2px;
+      font-size: var(--fs-label);
+      color: var(--text-2);
+    }
+    /* Drawn dot, not a glyph character */
+    .dot {
+      width: 7px;
+      height: 7px;
+      flex: none;
+      border-radius: 50%;
+      background: var(--text-3);
+      transition: background 180ms cubic-bezier(.2, 0, 0, 1);
+    }
+    .state.on { color: var(--brand); font-weight: 600; }
+    .state.on .dot { background: var(--brand); }
 
-    /* Toggle switch */
-    .switch {
+    /* Switch: styled on the input itself so it keeps a real focus ring */
+    .switch { flex: none; display: block; margin: 0; }
+    .switch input {
+      appearance: none;
+      -webkit-appearance: none;
+      display: block;
       position: relative;
-      width: 40px;
-      height: 22px;
-      flex-shrink: 0;
-    }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider {
-      position: absolute;
-      inset: 0;
-      background: #ddd;
-      border-radius: 11px;
+      width: 46px;
+      height: 26px;
+      margin: 0;
+      border-radius: 13px;
+      background: var(--track);
       cursor: pointer;
-      transition: background 0.2s;
+      transition: background 180ms cubic-bezier(.2, 0, 0, 1);
     }
-    .slider::before {
+    .switch input::after {
       content: '';
       position: absolute;
-      width: 18px;
-      height: 18px;
-      left: 2px;
-      top: 2px;
-      background: #fff;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.25);
-      transition: transform 0.2s;
+      background: #fff;
+      box-shadow: var(--shadow-thumb);
+      transition: transform 200ms cubic-bezier(.2, 0, 0, 1);
     }
-    input:checked + .slider { background: #cc0000; }
-    input:checked + .slider::before { transform: translateX(18px); }
+    .switch input:checked { background: var(--brand); }
+    .switch input:checked::after { transform: translateX(20px); }
+    .switch input:hover { background: var(--line-strong); }
+    .switch input:checked:hover { background: var(--brand-hover); }
+    .switch input:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
 
-    /* Sliders section */
-    .sliders { border-top: 1px solid #f5f5f5; padding-top: 10px; }
-    .sliders.dimmed { opacity: 0.35; pointer-events: none; }
+    /* ---------- Timing ---------- */
+    .timing {
+      padding: var(--s3) var(--s4) var(--s4);
+      border-top: 1px solid var(--line);
+    }
+    .section-label {
+      /* More space above than below, per the spacing rule */
+      margin: var(--s1) 0 var(--s3);
+      font-size: var(--fs-micro);
+      font-weight: 650;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
 
-    .slider-row {
+    .field + .field { margin-top: var(--s4); }
+
+    .field-head {
       display: flex;
-      justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 5px;
-    }
-    .slider-row label { font-size: 11px; color: #555; }
-    .slider-row .val  { font-size: 11px; color: #cc0000; font-weight: 600; }
-
-    input[type="range"] {
-      width: 100%;
-      height: 3px;
-      margin-bottom: 12px;
-      accent-color: #cc0000;
-      cursor: pointer;
-    }
-    input[type="range"]:last-child { margin-bottom: 0; }
-
-    .reset-row {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 2px;
-    }
-    .reset-button {
-      border: 0;
-      background: transparent;
-      color: #777;
-      cursor: pointer;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 4px 0;
-    }
-    .reset-button:hover { color: #cc0000; }
-
-    /* Footer */
-    .footer {
-      display: flex;
       justify-content: space-between;
-      align-items: center;
-      padding: 7px 14px;
-      background: #fafafa;
-      border-top: 1px solid #f0f0f0;
+      gap: var(--s2);
     }
-    .footer-label { font-size: 10px; color: #bbb; }
-    .keys { display: flex; gap: 5px; align-items: center; }
-    .key {
-      font-size: 9px;
-      font-family: monospace;
-      background: #e8e8e8;
-      color: #555;
-      padding: 2px 5px;
+    .field-head label { font-size: var(--fs-label); font-weight: 600; color: var(--text); }
+    .field-value {
+      font-size: var(--fs-value);
+      font-weight: 650;
+      color: var(--brand);
+      font-variant-numeric: tabular-nums;
+    }
+    .field-help {
+      margin-top: 1px;
+      font-size: var(--fs-micro);
+      color: var(--text-3);
+    }
+
+    /* Range: 28px hit area, 4px visible track, filled progress */
+    input[type="range"] {
+      appearance: none;
+      -webkit-appearance: none;
+      display: block;
+      width: 100%;
+      height: var(--control-h);
+      margin: var(--s1) 0 0;
       border-radius: 3px;
-      border-bottom: 2px solid #ccc;
+      background:
+        linear-gradient(to right,
+          var(--brand) 0 var(--pct, 0%),
+          var(--track) var(--pct, 0%) 100%)
+        center / 100% 4px no-repeat;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-runnable-track { height: 4px; background: transparent; }
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      margin-top: -6px;
+      border-radius: 50%;
+      background: var(--brand);
+      border: 2px solid var(--bg);
+      box-shadow: var(--shadow-thumb);
+      transition: transform 140ms cubic-bezier(.2, 0, 0, 1), box-shadow 140ms;
+    }
+    input[type="range"]:hover::-webkit-slider-thumb { transform: scale(1.14); }
+    input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.24); }
+    input[type="range"]:focus-visible {
+      outline: 2px solid var(--ring);
+      outline-offset: 1px;
+    }
+    /* Non-WebKit engines keep a native control, tinted to match */
+    @supports not (selector(::-webkit-slider-thumb)) {
+      input[type="range"] { accent-color: var(--brand); }
+    }
+
+    /* ---------- Reset ---------- */
+    .reset {
+      display: block;
+      width: 100%;
+      min-height: 32px;
+      margin-top: var(--s4);
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius);
+      background: var(--bg-raised);
+      color: var(--text-2);
+      font: inherit;
+      font-size: var(--fs-label);
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 140ms, color 140ms, border-color 140ms;
+    }
+    .reset:hover { color: var(--brand); border-color: var(--brand); }
+    .reset:active { background: color-mix(in srgb, var(--brand) 8%, var(--bg-raised)); }
+    .reset:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+    .reset[disabled] { opacity: .5; cursor: default; }
+    .reset[disabled]:hover { color: var(--text-2); border-color: var(--line-strong); }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition-duration: 1ms !important; }
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <img src="icons/icon16.png" alt="">
-    <span class="header-title" data-i18n="popupTitle">YouTube Auto-Scroll</span>
-  </div>
+  <header class="masthead">
+    <img class="mark" src="icons/icon48.png" width="22" height="22" alt="">
+    <h1 data-i18n="popupTitle">YouTube Auto-Scroll</h1>
+    <span class="key" id="shortcutKeys"></span>
+  </header>
 
-  <div class="body">
-    <div class="toggle-row">
-      <div>
-        <div class="toggle-label" data-i18n="autoScrollLabel">Auto-scroll</div>
-        <div class="toggle-status off" id="statusText"></div>
+  <section class="control">
+    <div class="control-copy">
+      <span class="control-name" data-i18n="autoScrollLabel">Auto-scroll</span>
+      <span class="state" id="statusText">
+        <span class="dot" aria-hidden="true"></span>
+        <span id="statusLabel">Paused</span>
+      </span>
+    </div>
+    <label class="switch">
+      <input type="checkbox" id="active" aria-describedby="statusLabel">
+    </label>
+  </section>
+
+  <section class="timing">
+    <h2 class="section-label" data-i18n="timingLabel">Timing</h2>
+
+    <div class="field">
+      <div class="field-head">
+        <label for="threshold" data-i18n="triggerLabel">Switch before end</label>
+        <output class="field-value" for="threshold"><span id="thresholdVal">0.5</span>s</output>
       </div>
-      <label class="switch">
-        <input type="checkbox" id="active">
-        <span class="slider"></span>
-      </label>
+      <input type="range" id="threshold" min="0.1" max="3" step="0.1" value="0.5"
+             aria-describedby="thresholdHelp">
+      <p class="field-help" id="thresholdHelp" data-i18n="triggerHelp"></p>
     </div>
 
-    <div class="sliders dimmed" id="sliders">
-      <div class="slider-row">
-        <label data-i18n="delayLabel">Delay before next</label>
-        <span class="val"><span id="delayVal">0.0</span>s</span>
+    <div class="field">
+      <div class="field-head">
+        <label for="delay" data-i18n="delayLabel">Hold afterwards</label>
+        <output class="field-value" for="delay"><span id="delayVal">0.0</span>s</output>
       </div>
-      <input type="range" id="delay" min="0" max="5" step="0.5" value="0">
-
-      <div class="slider-row">
-        <label data-i18n="triggerLabel">Trigger early</label>
-        <span class="val"><span id="thresholdVal">0.5</span>s</span>
-      </div>
-      <input type="range" id="threshold" min="0.1" max="3" step="0.1" value="0.5">
-
-      <div class="reset-row">
-        <button type="button" class="reset-button" id="resetSettings" data-i18n="resetSettingsLabel">Reset settings</button>
-      </div>
+      <input type="range" id="delay" min="0" max="5" step="0.5" value="0"
+             aria-describedby="delayHelp">
+      <p class="field-help" id="delayHelp" data-i18n="delayHelp"></p>
     </div>
-  </div>
 
-  <div class="footer">
-    <span class="footer-label" data-i18n="shortcutLabel">Toggle shortcut</span>
-    <div class="keys" id="shortcutKeys"></div>
-  </div>
+    <button type="button" class="reset" id="resetSettings" data-i18n="resetSettingsLabel">Reset settings</button>
+  </section>
 
   <script src="popup-state.js"></script>
   <script src="popup.js"></script>

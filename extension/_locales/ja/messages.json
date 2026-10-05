@@ -1,13 +1,16 @@
 {
-  "extName":         { "message": "YouTube Shorts 自動スクロール" },
-  "extDescription":  { "message": "現在のYouTube Shortが終了すると、自動的に次のShortに移動します。" },
-  "toggleCommand":   { "message": "自動スクロールを切り替え" },
-  "popupTitle":      { "message": "YouTube 自動スクロール" },
-  "autoScrollLabel": { "message": "自動スクロール" },
-  "statusActive":    { "message": "Shortsで有効" },
-  "statusPaused":    { "message": "一時停止中" },
-  "delayLabel":      { "message": "次へ移動までの遅延" },
-  "triggerLabel":    { "message": "早めに切り替え" },
-  "shortcutLabel":   { "message": "ショートカット" },
-  "resetSettingsLabel": { "message": "設定をリセット" }
+  "extName":             { "message": "YouTube Shorts 自動スクロール" },
+  "extDescription":      { "message": "現在のYouTube Shortが終了すると、自動的に次のShortに移動します。" },
+  "toggleCommand":       { "message": "自動スクロールを切り替え" },
+  "popupTitle":          { "message": "YouTube 自動スクロール" },
+  "autoScrollLabel":     { "message": "自動スクロール" },
+  "statusActive":        { "message": "Shortsで有効" },
+  "statusPaused":        { "message": "一時停止中" },
+  "timingLabel":         { "message": "タイミング" },
+  "triggerLabel":        { "message": "終了前に切り替える" },
+  "triggerHelp":         { "message": "残りがこの秒数のときに進みます。" },
+  "delayLabel":          { "message": "その後に待つ" },
+  "delayHelp":           { "message": "切り替えの後に追加で待ちます。" },
+  "shortcutLabel":       { "message": "ショートカット" },
+  "resetSettingsLabel":  { "message": "設定をリセット" }
 }

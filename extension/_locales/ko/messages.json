@@ -1,13 +1,16 @@
 {
-  "extName":         { "message": "YouTube Shorts 자동 스크롤" },
-  "extDescription":  { "message": "현재 YouTube Short가 끝나면 자동으로 다음 Short로 넘어갑니다." },
-  "toggleCommand":   { "message": "자동 스크롤 토글" },
-  "popupTitle":      { "message": "YouTube 자동 스크롤" },
-  "autoScrollLabel": { "message": "자동 스크롤" },
-  "statusActive":    { "message": "Shorts에서 활성화" },
-  "statusPaused":    { "message": "일시 정지" },
-  "delayLabel":      { "message": "다음 영상까지 지연" },
-  "triggerLabel":    { "message": "조기 전환" },
-  "shortcutLabel":   { "message": "단축키" },
-  "resetSettingsLabel": { "message": "설정 초기화" }
+  "extName":             { "message": "YouTube Shorts 자동 스크롤" },
+  "extDescription":      { "message": "현재 YouTube Short가 끝나면 자동으로 다음 Short로 넘어갑니다." },
+  "toggleCommand":       { "message": "자동 스크롤 토글" },
+  "popupTitle":          { "message": "YouTube 자동 스크롤" },
+  "autoScrollLabel":     { "message": "자동 스크롤" },
+  "statusActive":        { "message": "Shorts에서 활성화" },
+  "statusPaused":        { "message": "일시 정지" },
+  "timingLabel":         { "message": "타이밍" },
+  "triggerLabel":        { "message": "끝나기 전에 전환" },
+  "triggerHelp":         { "message": "이 초가 남았을 때 넘어갑니다." },
+  "delayLabel":          { "message": "그 후 대기" },
+  "delayHelp":           { "message": "전환 시점 이후 추가로 기다립니다." },
+  "shortcutLabel":       { "message": "단축키" },
+  "resetSettingsLabel":  { "message": "설정 초기화" }
 }
